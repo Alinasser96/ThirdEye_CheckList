@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/bottom"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/logout"
+            android:title="@string/logout" />
+
+        <item
+            android:id="@+id/change_language"
+            android:title="@string/changeLaguage" />
+    </group>
+
+    <group android:id="@+id/group">
+        <item
+            android:id="@+id/nav_version"
+            android:title="@string/version_number" />
+    </group>
+
+</menu>

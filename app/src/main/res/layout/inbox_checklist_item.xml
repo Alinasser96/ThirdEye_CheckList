@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_10sdp"
+    app:cardCornerRadius="@dimen/_20sdp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_bg"
+        android:backgroundTint="@color/platinum">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/inbox_checklist_item_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_bg"
+            android:backgroundTint="@color/platinum"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                android:id="@+id/side_view"
+                android:layout_width="@dimen/_8sdp"
+                android:layout_height="0dp"
+                android:background="@drawable/green_rounded_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/inbox_checklist_name_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/cairo_bold"
+                android:gravity="center"
+                android:textSize="@dimen/_15sdp"
+                app:layout_constraintStart_toEndOf="@id/side_view"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="checkList" />
+
+            <TextView
+                android:id="@+id/inbox_by_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:fontFamily="@font/cairo_bold"
+                android:textSize="@dimen/_15sdp"
+                app:layout_constraintStart_toEndOf="@id/side_view"
+                app:layout_constraintTop_toBottomOf="@id/inbox_checklist_name_tv"
+                tools:text="by: Aly nasser eldin" />
+
+            <TextView
+                android:id="@+id/inbox_availability_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:fontFamily="@font/cairo_bold"
+                android:textSize="@dimen/_15sdp"
+                app:layout_constraintStart_toEndOf="@id/side_view"
+                app:layout_constraintTop_toBottomOf="@id/inbox_by_tv"
+                tools:text="ends: 20-8-2020" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

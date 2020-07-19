@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_10sdp"
+    app:cardCornerRadius="@dimen/_40sdp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_bg">
+
+        <View
+            android:id="@+id/side_view"
+            android:layout_width="@dimen/_8sdp"
+            android:layout_height="0dp"
+            android:background="@drawable/green_rounded_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/checklist_name_tv"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:fontFamily="@font/cairo_bold"
+            android:gravity="center"
+            android:layout_margin="@dimen/_5sdp"
+            android:background="@color/shimmer_background"
+            android:textSize="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/side_view"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="checkList" />
+
+        <View
+            android:id="@+id/start_date_tv"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:fontFamily="@font/cairo_bold"
+            android:textSize="@dimen/_15sdp"
+            android:layout_margin="@dimen/_8sdp"
+            android:background="@color/shimmer_background"
+            app:layout_constraintStart_toEndOf="@id/side_view"
+            app:layout_constraintTop_toBottomOf="@id/checklist_name_tv"
+            />
+
+        <View
+            android:id="@+id/checklist_date_shimmer"
+            android:layout_width="@dimen/_180sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:fontFamily="@font/cairo_bold"
+            android:textSize="@dimen/_15sdp"
+            android:layout_margin="@dimen/_8sdp"
+            android:background="@color/shimmer_background"
+            app:layout_constraintStart_toEndOf="@id/side_view"
+            app:layout_constraintTop_toBottomOf="@id/start_date_tv"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

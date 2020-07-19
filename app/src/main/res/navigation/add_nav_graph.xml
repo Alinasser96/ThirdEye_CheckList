@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/inbox_nav_graph"
+    app:startDestination="@id/checkListsFragment">
+    <fragment
+        android:id="@+id/checkListsFragment"
+        android:name="com.alyndroid.thirdeyechecklist.ui.checklists.CheckListsFragment"
+        android:label="fragment_check_lists"
+        tools:layout="@layout/fragment_check_lists" >
+        <action
+            android:id="@+id/action_checkListsFragment_to_addCheckListFragment"
+            app:destination="@id/addCheckListFragment"
+            app:popUpTo="@id/checkListsFragment" />
+        <action
+            android:id="@+id/action_checkListsFragment_to_editChecklistFragment"
+            app:destination="@id/editChecklistFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addCheckListFragment"
+        android:name="com.alyndroid.thirdeyechecklist.ui.checklists.addChecklist.AddCheckListFragment"
+        android:label="fragment_add_check_list"
+        tools:layout="@layout/fragment_add_check_list" >
+        <action
+            android:id="@+id/action_addCheckListFragment_to_addPageFragment"
+            app:destination="@id/addPageFragment"
+            app:popUpTo="@id/addPageFragment" />
+        <action
+            android:id="@+id/action_addCheckListFragment_to_checkListsFragment"
+            app:destination="@id/checkListsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addPageFragment"
+        android:name="com.alyndroid.thirdeyechecklist.ui.checklists.pages.AddPageFragment"
+        android:label="fragment_add_page"
+        tools:layout="@layout/fragment_add_page" >
+        <action
+            android:id="@+id/action_addPageFragment_to_addCheckListFragment"
+            app:destination="@id/addCheckListFragment" />
+        <action
+            android:id="@+id/action_addPageFragment_to_addTaskFragment"
+            app:destination="@id/addTaskFragment" />
+        <argument
+            android:name="checkListId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_addPageFragment_to_editChecklistFragment"
+            app:destination="@id/editChecklistFragment" />
+        <argument
+            android:name="from_editing"
+            app:argType="boolean" />
+        <argument
+            android:name="checklistData"
+            app:argType="com.alyndroid.thirdeyechecklist.data.model.UserChecklistData"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_addPageFragment_to_checkListsFragment"
+            app:destination="@id/checkListsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addTaskFragment"
+        android:name="com.alyndroid.thirdeyechecklist.ui.checklists.tasks.AddTaskFragment"
+        android:label="AddTaskFragment" >
+        <action
+            android:id="@+id/action_addTaskFragment_to_addPageFragment"
+            app:destination="@id/addPageFragment" />
+        <argument
+            android:name="pageID"
+            app:argType="integer" />
+        <argument
+            android:name="checklistID"
+            app:argType="integer" />
+        <argument
+            android:name="from_editing"
+            app:argType="boolean" />
+        <argument
+            android:name="checklistData"
+            app:argType="com.alyndroid.thirdeyechecklist.data.model.UserChecklistData"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/editChecklistFragment"
+        android:name="com.alyndroid.thirdeyechecklist.ui.checklists.edit.EditChecklistFragment"
+        android:label="EditChecklistFragment" >
+        <argument
+            android:name="checklistData"
+            app:argType="com.alyndroid.thirdeyechecklist.data.model.UserChecklistData" />
+        <action
+            android:id="@+id/action_editChecklistFragment_to_checkListsFragment"
+            app:destination="@id/checkListsFragment" />
+        <action
+            android:id="@+id/action_editChecklistFragment_to_addPageFragment"
+            app:destination="@id/addPageFragment" />
+    </fragment>
+</navigation>
