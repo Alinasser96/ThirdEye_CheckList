@@ -1,25 +1,29 @@
 package com.alyndroid.thirdeyechecklist.ui.checklists.addChecklist
 
+import android.app.AlarmManager
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.EditText
 import androidx.activity.addCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.alyndroid.thirdeyechecklist.R
-import com.alyndroid.thirdeyechecklist.data.model.AllUsersData
 import com.alyndroid.thirdeyechecklist.data.model.RemoteUserData
 import com.alyndroid.thirdeyechecklist.databinding.FragmentAddCheckListBinding
+import com.alyndroid.thirdeyechecklist.ui.notification.AlertReceiver
 import com.alyndroid.thirdeyechecklist.util.SharedPreference
 import com.github.razir.progressbutton.attachTextChangeAnimator
 import com.github.razir.progressbutton.hideProgress
@@ -34,6 +38,7 @@ import kotlin.collections.HashMap
 class AddCheckListFragment : Fragment() {
 
     lateinit var myCalendar: Calendar
+    lateinit var startTimeCalendar: Calendar
     var usersList: List<RemoteUserData> = listOf()
     lateinit var date: OnDateSetListener
     lateinit var binding: FragmentAddCheckListBinding
@@ -98,14 +103,19 @@ class AddCheckListFragment : Fragment() {
                 val map = HashMap<Any, Any>()
 
                 map.put("name", binding.checklistNameEt.text.toString())
-                map.put("start_at", binding.startDateEt.text.toString()+" " +binding.startTimeEt.text.toString())
+                map.put(
+                    "start_at",
+                    binding.startDateEt.text.toString() + " " + binding.startTimeEt.text.toString()
+                )
                 map.put("active", binding.activeCb.isChecked)
-                map.put("holiday_action", when(binding.dueDateEt.editableText.toString()){
-                    "Shift to nearest working day."->"1"
-                    "Keep on that date."->"2"
-                    "Do not ask for it"->"3"
-                    else -> 0
-                })
+                map.put(
+                    "holiday_action", when (binding.dueDateEt.editableText.toString()) {
+                        "Shift to nearest working day." -> "1"
+                        "Keep on that date." -> "2"
+                        "Do not ask for it" -> "3"
+                        else -> 0
+                    }
+                )
                 map.put("checklist_shifted_anthor_due", binding.dueDateHolidayCb.isChecked)
                 map.put("assign_later", binding.assignLaterRb.isChecked)
                 map.put("users", selectedUsersList)
@@ -122,20 +132,22 @@ class AddCheckListFragment : Fragment() {
                 map.put("repeat", binding.repeatEveryRb.isChecked)
                 map.put("repeat_type", binding.repetitionUnitEt.editableText.toString())
                 map.put("repeat_num", binding.repetitionEveryEt.text.toString())
+                map.put("start_time_inmills", startTimeCalendar.timeInMillis)
 
                 viewModel.createChecklist(map)
+
             }
         }
 
         viewModel.loading.observe(requireActivity(), androidx.lifecycle.Observer {
-                if (it) {
-                    binding.submitChecklistButton.showProgress {
-                        buttonTextRes = R.string.loading
-                        progressColor = Color.WHITE
-                    }
-                } else {
-                    binding.submitChecklistButton.hideProgress(R.string.add)
+            if (it) {
+                binding.submitChecklistButton.showProgress {
+                    buttonTextRes = R.string.loading
+                    progressColor = Color.WHITE
                 }
+            } else {
+                binding.submitChecklistButton.hideProgress(R.string.add)
+            }
         })
     }
 
@@ -144,6 +156,7 @@ class AddCheckListFragment : Fragment() {
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         binding.startDateEt.setText(sdf.format(myCalendar.getTime()))
     }
+
 
     private fun initUi() {
         val units = arrayOf<String?>("hours", "days", "months")
@@ -193,18 +206,28 @@ class AddCheckListFragment : Fragment() {
         binding.dueDateEt.setAdapter(dueDateAdapter)
 
         myCalendar = Calendar.getInstance()
+        startTimeCalendar = Calendar.getInstance()
         date = OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
             // TODO Auto-generated method stub
             myCalendar.set(Calendar.YEAR, year)
             myCalendar.set(Calendar.MONTH, monthOfYear)
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            startTimeCalendar.set(Calendar.YEAR, year)
+            startTimeCalendar.set(Calendar.MONTH, monthOfYear)
+            startTimeCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+
             updateLabel()
         }
 
         binding.startTimeEt.setOnClickListener {
             val timePickerDialog = TimePickerDialog(
                 requireContext(),
-                OnTimeSetListener { view, hourOfDay, minute -> binding.startTimeEt.setText("$hourOfDay:$minute:00") },
+                OnTimeSetListener { view, hourOfDay, minute ->
+                    binding.startTimeEt.setText("$hourOfDay:$minute:00")
+                    startTimeCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                    startTimeCalendar.set(Calendar.MINUTE, minute)
+                },
                 myCalendar[Calendar.HOUR_OF_DAY],
                 myCalendar[Calendar.MINUTE],
                 false
@@ -366,6 +389,7 @@ class AddCheckListFragment : Fragment() {
 
         return flag
     }
+
 
 
 }

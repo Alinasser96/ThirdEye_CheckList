@@ -76,8 +76,8 @@ class SharedPreference(val context: Context) {
         editor.remove("name")
         editor.remove("password")
         editor.remove("user_id")
-        editor.remove("salesman_no")
-        editor.remove("type")
+        editor.remove("phone")
+        editor.remove("fireBaseToken")
         editor.apply()
     }
 }

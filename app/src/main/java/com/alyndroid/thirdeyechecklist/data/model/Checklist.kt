@@ -26,6 +26,7 @@ data class Checklist(
     val show_last_status: String,
     val start_at: String,
     val updated_at: String,
+    val start_time_inmills: String,
     val updated_by: Any,
     val working_from: String,
     val working_to: String

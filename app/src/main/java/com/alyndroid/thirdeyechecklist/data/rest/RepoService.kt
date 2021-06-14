@@ -21,6 +21,9 @@ interface RepoService {
     @POST("login")
     fun loginAsync(@Body map: HashMap<Any, Any>): Deferred<LoginResponse>
 
+    @POST("user-token/{userID}")
+    fun saveFirebaseAsync(@Path("userID") userID: Int, @Body map: HashMap<Any, Any>): Deferred<SaveFirebaseResponse>
+
     @POST("checklists")
     fun createChecklistAsync(@Body map: HashMap<Any, Any>): Deferred<LoginResponse>
 

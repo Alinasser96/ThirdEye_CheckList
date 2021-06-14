@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.alyndroid.thirdeyechecklist.data.model.LoginResponse
+import com.alyndroid.thirdeyechecklist.data.model.SaveFirebaseResponse
 import com.alyndroid.thirdeyechecklist.data.rest.RepoService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +23,10 @@ class LoginViewModel : ViewModel() {
     val response: LiveData<LoginResponse>
         get() = _response
 
+    private val _saveFirebaseResponse = MutableLiveData<SaveFirebaseResponse>()
+    val saveFirebaseResponse: LiveData<SaveFirebaseResponse>
+        get() = _saveFirebaseResponse
+
 
     fun login(phone:String, password: String) {
         coroutineScope.launch {
@@ -32,6 +37,20 @@ class LoginViewModel : ViewModel() {
             try {
                 val stringResult = loginDeferred.await()
                 _response.value = stringResult
+                _loading.value = false
+            } catch (e: Exception) {
+                _loading.value = false
+            }
+        }
+    }
+
+    fun saveFirebaseToken(userId :Int, token: String) {
+        coroutineScope.launch {
+            _loading.value = true
+            val loginDeferred = RepoService.SNBApi.retrofitService.saveFirebaseAsync(userId, hashMapOf(Pair("fb_token", token)))
+            try {
+                val stringResult = loginDeferred.await()
+                _saveFirebaseResponse.value = stringResult
                 _loading.value = false
             } catch (e: Exception) {
                 _loading.value = false

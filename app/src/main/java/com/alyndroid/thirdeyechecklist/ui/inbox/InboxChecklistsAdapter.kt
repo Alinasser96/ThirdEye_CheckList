@@ -37,6 +37,8 @@ class InboxChecklistsAdapter(val context: Context, private val checklistClickLis
         holder.checklistAvailabilityTextView.text = "start date: " + result.checklist.start_at + "\navailability: " +
                 result.availability_num.toString() + "-" + result.checklist.availability_type
         holder.checklistlayout.setOnClickListener { checklistClickListener.onClick(result.checklist.id, result.id) }
+
+
     }
 
 

@@ -1,20 +1,25 @@
 package com.alyndroid.thirdeyechecklist.ui
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.alyndroid.thirdeyechecklist.R
 import com.alyndroid.thirdeyechecklist.base.BaseActivity
-import com.alyndroid.thirdeyechecklist.ui.inbox.NavHostInboxFragment
 import com.alyndroid.thirdeyechecklist.ui.checklists.NavHostAddCheckListFragment
+import com.alyndroid.thirdeyechecklist.ui.inbox.NavHostInboxFragment
+import com.alyndroid.thirdeyechecklist.ui.login.LoginActivity
 import com.alyndroid.thirdeyechecklist.ui.notification.NavHostNotificationFragment
 import com.alyndroid.thirdeyechecklist.ui.reports.NavHostReportsFragment
 import com.alyndroid.thirdeyechecklist.ui.settings.NavHostSettingsFragment
+import com.alyndroid.thirdeyechecklist.util.SharedPreference
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -117,6 +122,12 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         drawerLayout.addDrawerListener(toggle!!)
         toggle!!.syncState()
 
+        navigationView.getHeaderView(0).findViewById<TextView>(R.id.tv_nav_full_name).text =
+            SharedPreference(this).getValueString("name")
+
+        navigationView.menu.findItem(R.id.nav_version).title = "version : " +
+                this.packageManager.getPackageInfo(this.packageName, 0).versionName
+
         navigationView.setNavigationItemSelectedListener(this)
     }
 
@@ -132,12 +143,24 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 change()
                 forceRTLIfSupported()
             }
+
+            R.id.logout -> {
+                SharedPreference(this).logout()
+
+                //goto login
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                try {
+                    ActivityCompat.finishAffinity(this)
+                } catch (e: IllegalStateException) {
+                    finish()
+                }
+            }
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
-
-
 
 
 }

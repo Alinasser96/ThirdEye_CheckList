@@ -1,5 +1,10 @@
 package com.alyndroid.thirdeyechecklist.ui.inbox
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,7 +20,10 @@ import com.alyndroid.thirdeyechecklist.R
 import com.alyndroid.thirdeyechecklist.data.model.UserChecklistData
 import com.alyndroid.thirdeyechecklist.databinding.FragmentInboxBinding
 import com.alyndroid.thirdeyechecklist.ui.checklists.ChecklistsAdapter
+import com.alyndroid.thirdeyechecklist.ui.notification.AlertReceiver
 import com.alyndroid.thirdeyechecklist.util.SharedPreference
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class InboxFragment : Fragment() {
@@ -62,6 +70,7 @@ class InboxFragment : Fragment() {
                 } else {
                     adapter.submitList(it.data)
                     adapter.notifyDataSetChanged()
+                    
                 }
 
             }
@@ -84,4 +93,6 @@ class InboxFragment : Fragment() {
 
 
     }
+
+
 }

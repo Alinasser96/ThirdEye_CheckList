@@ -3,6 +3,7 @@ package com.alyndroid.thirdeyechecklist.ui.login
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -14,6 +15,8 @@ import com.alyndroid.thirdeyechecklist.util.SharedPreference
 import com.github.razir.progressbutton.attachTextChangeAnimator
 import com.github.razir.progressbutton.hideProgress
 import com.github.razir.progressbutton.showProgress
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 
 
 class LoginActivity : AppCompatActivity() {
@@ -39,13 +42,38 @@ class LoginActivity : AppCompatActivity() {
                 )
             }
         }
+        var token: String? = null
 
+        if (SharedPreference(this).getValueString("fireBaseToken")== null || SharedPreference(this).getValueString("fireBaseToken")!!.isEmpty()){
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("SplashActivity", "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new FCM registration token
+                token = task.result
+
+                // Log and toast
+                val msg =  token
+                Log.d("SplashActivity", msg)
+                SharedPreference(this).save("fireBaseToken", token!!)
+            })} else {
+            token = SharedPreference(this).getValueString("fireBaseToken")
+        }
         viewModel.response.observe(this, Observer {
             if (it.success) {
                 SharedPreference(this).save("name", it.data.name)
                 SharedPreference(this).save("phone", binding.phoneNoEt.text.toString())
                 SharedPreference(this).save("userID", it.data.id)
                 SharedPreference(this).save("password", binding.passwordEt.editableText.toString())
+
+                viewModel.saveFirebaseToken(it.data.id, token!!)
+            }
+        })
+
+        viewModel.saveFirebaseResponse.observe(this, Observer {
+            if (it.status){
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
